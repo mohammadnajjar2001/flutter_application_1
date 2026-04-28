@@ -49,52 +49,61 @@ class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF12433B),
-        title: Text("الأخبار", style: TextStyle(color: Color(0xFF988561))),
-        centerTitle: true,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF12433B), Color(0xFF0E2E29)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Color(0xFF12433B)),
+        title: Text(
+          "الأخبار",
+          style: TextStyle(
+            color: Color(0xFF12433B),
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: ListView.builder(
-          padding: EdgeInsets.all(20),
-          itemCount: news.length,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: EdgeInsets.only(bottom: 15),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Color(0xFF988561), width: 1.5),
-              ),
-              child: ListTile(
-                leading: Icon(
-                  Icons.newspaper,
-                  color: Color(0xFF988561),
-                  size: 30,
-                ),
-                title: Text(
-                  news[index]["title"]!,
-                  style: TextStyle(
-                    color: Color(0xFF988561),
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+        centerTitle: true,
+      ),
+
+      body: ListView.builder(
+        padding: EdgeInsets.all(20),
+        itemCount: news.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 15),
+            padding: EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Color(0xFF988561), width: 1.5),
+              color: Colors.white,
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.newspaper, color: Color(0xFF988561), size: 32),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        news[index]["title"]!,
+                        style: TextStyle(
+                          color: Color(0xFF12433B),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        news[index]["desc"]!,
+                        style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      ),
+                    ],
                   ),
                 ),
-                subtitle: Text(
-                  news[index]["desc"]!,
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                ),
-              ),
-            );
-          },
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

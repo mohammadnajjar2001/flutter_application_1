@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'signup.dart';
 import 'home.dart';
+import 'signup.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController email = TextEditingController();
@@ -9,97 +9,116 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF12433B), Color(0xFF0E2E29)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "تسجيل الدخول",
-                  style: TextStyle(
-                    color: Color(0xFF988561),
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+
+              Text(
+                "تسجيل الدخول",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF12433B),
                 ),
+              ),
 
-                SizedBox(height: 40),
+              const SizedBox(height: 10),
 
-                _inputField("البريد الإلكتروني", email),
-                SizedBox(height: 20),
-                _inputField("كلمة المرور", password, isPassword: true),
+              Text(
+                "أدخل بيانات حسابك للمتابعة",
+                style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+              ),
 
-                SizedBox(height: 30),
+              const SizedBox(height: 40),
 
-                // _goldButton(
-                //   text: "دخول",
-                //   onPressed: () {
-                //     Navigator.push(context, MaterialPageRoute(builder: (_) => JobFormScreen()));
-                //   },
-                // ),
-                _goldButton(
-                  text: "دخول",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => HomeScreen(
-                          name: "MOHAMMAD",
-                          email: email.text,
-                          phone: "0590000000",
-                        ),
+              _inputField(
+                label: "البريد الإلكتروني",
+                controller: email,
+                icon: Icons.email_outlined,
+              ),
+
+              const SizedBox(height: 20),
+
+              _inputField(
+                label: "كلمة المرور",
+                controller: password,
+                icon: Icons.lock_outline,
+                isPassword: true,
+              ),
+
+              const SizedBox(height: 30),
+
+              _mainButton(
+                text: "تسجيل الدخول",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => HomeScreen(
+                        name: "MOHAMMAD",
+                        email: email.text,
+                        phone: "0590000000",
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
+              ),
 
-                SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => SignupScreen()),
-                    );
-                  },
-                  child: Text(
-                    "ليس لديك حساب؟ إنشاء حساب",
-                    style: TextStyle(color: Color(0xFF988561)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "ليس لديك حساب؟",
+                    style: TextStyle(color: Colors.grey[700]),
                   ),
-                ),
-              ],
-            ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => SignupScreen()),
+                      );
+                    },
+                    child: Text(
+                      "إنشاء حساب",
+                      style: TextStyle(
+                        color: Color(0xFF988561),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _inputField(
-    String label,
-    TextEditingController controller, {
+  Widget _inputField({
+    required String label,
+    required TextEditingController controller,
+    required IconData icon,
     bool isPassword = false,
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Color(0xFF988561)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Color(0xFF988561), width: 1.5),
       ),
       child: TextField(
         controller: controller,
         obscureText: isPassword,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.black87),
         decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: Color(0xFF988561)),
           labelText: label,
           labelStyle: TextStyle(color: Color(0xFF988561)),
           border: InputBorder.none,
@@ -109,23 +128,17 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _goldButton({required String text, required VoidCallback onPressed}) {
+  Widget _mainButton({required String text, required VoidCallback onTap}) {
     return Container(
       width: double.infinity,
       height: 55,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF988561), Color(0xFF7A6A4F)],
-        ),
-        borderRadius: BorderRadius.circular(15),
+        color: Color(0xFF12433B),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: onPressed,
-        child: Text(text, style: TextStyle(fontSize: 18, color: Colors.white)),
+      child: TextButton(
+        onPressed: onTap,
+        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
       ),
     );
   }

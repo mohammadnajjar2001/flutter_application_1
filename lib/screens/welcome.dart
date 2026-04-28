@@ -7,132 +7,125 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF12433B),
-              Color(0xFF0E2E29),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Logo
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Color(0xFF988561), width: 2),
-                  ),
-                  child: Image.asset('assets/images/1.png', width: 140),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 60),
+
+              // Logo
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: Color(0xFF12433B),
+                  shape: BoxShape.circle,
                 ),
+                child: Image.asset("assets/images/1.png", fit: BoxFit.contain),
+              ),
 
-                SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-                Text(
-                  "مرحبًا بك في تطبيق التوظيف",
+              Text(
+                "أهلاً بك",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF12433B),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                "اختر ما تريد القيام به",
+                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+              ),
+
+              const SizedBox(height: 50),
+
+              _mainButton(
+                text: "تسجيل الدخول",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => LoginScreen()),
+                  );
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              _outlineButton(
+                text: "إنشاء حساب جديد",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => SignupScreen()),
+                  );
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => NewsScreen()),
+                  );
+                },
+                child: Text(
+                  "عرض الأخبار",
                   style: TextStyle(
                     color: Color(0xFF988561),
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-
-                SizedBox(height: 40),
-
-                // Create Account Button
-                _goldButton(
-                  text: "إنشاء حساب",
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => SignupScreen()));
-                  },
-                ),
-
-                SizedBox(height: 15),
-
-                // Login Button
-                _whiteButton(
-                  text: "تسجيل الدخول",
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
-                  },
-                ),
-
-                SizedBox(height: 25),
-
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => NewsScreen()));
-                  },
-                  child: Text(
-                    "أخبار فرع الانتساب والتوظيف",
-                    style: TextStyle(
-                      color: Color(0xFF988561),
-                      fontSize: 16,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _goldButton({required String text, required VoidCallback onPressed}) {
+  Widget _mainButton({required String text, required VoidCallback onTap}) {
     return Container(
       width: double.infinity,
       height: 55,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF988561),
-            Color(0xFF7A6A4F),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(15),
+        color: Color(0xFF12433B),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
+      child: TextButton(
+        onPressed: onTap,
+        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
       ),
     );
   }
 
-  Widget _whiteButton({required String text, required VoidCallback onPressed}) {
+  Widget _outlineButton({required String text, required VoidCallback onTap}) {
     return Container(
       width: double.infinity,
       height: 55,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Color(0xFF988561), width: 2),
       ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Color(0xFF12433B),
-        ),
-        onPressed: onPressed,
+      child: TextButton(
+        onPressed: onTap,
         child: Text(
           text,
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(
+            color: Color(0xFF988561),
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

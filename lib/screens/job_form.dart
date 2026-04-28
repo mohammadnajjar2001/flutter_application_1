@@ -13,91 +13,95 @@ class JobFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF12433B),
-        title: Text("طلب توظيف", style: TextStyle(color: Color(0xFF988561))),
-        centerTitle: true,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF12433B), Color(0xFF0E2E29)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Color(0xFF12433B)),
+        title: Text(
+          "طلب توظيف",
+          style: TextStyle(
+            color: Color(0xFF12433B),
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _sectionTitle("المعلومات الشخصية"),
+        centerTitle: true,
+      ),
 
-                _input("الاسم الكامل", name, Icons.person),
-                SizedBox(height: 15),
-                _input("رقم الهوية", id, Icons.badge),
-                SizedBox(height: 15),
-                _input("رقم الهاتف", phone, Icons.phone),
-                SizedBox(height: 15),
-                _input("تاريخ الميلاد", birth, Icons.calendar_month),
-                SizedBox(height: 15),
-                _input("العنوان", address, Icons.location_on),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _sectionTitle("المعلومات الشخصية"),
 
-                SizedBox(height: 25),
-                _sectionTitle("المؤهلات"),
+            _inputField("الاسم الكامل", name, Icons.person_outline),
+            SizedBox(height: 15),
+            _inputField("رقم الهوية", id, Icons.badge_outlined),
+            SizedBox(height: 15),
+            _inputField("رقم الهاتف", phone, Icons.phone_outlined),
+            SizedBox(height: 15),
+            _inputField("تاريخ الميلاد", birth, Icons.calendar_month_outlined),
+            SizedBox(height: 15),
+            _inputField("العنوان", address, Icons.location_on_outlined),
 
-                _input("المؤهل العلمي", degree, Icons.school),
-                SizedBox(height: 15),
-                _input("الخبرات السابقة", experience, Icons.work),
-                SizedBox(height: 15),
-                _input("المهارات", skills, Icons.star),
+            SizedBox(height: 30),
+            _sectionTitle("المؤهلات"),
 
-                SizedBox(height: 25),
-                _sectionTitle("السيرة الذاتية"),
+            _inputField("المؤهل العلمي", degree, Icons.school_outlined),
+            SizedBox(height: 15),
+            _inputField("الخبرات السابقة", experience, Icons.work_outline),
+            SizedBox(height: 15),
+            _inputField("المهارات", skills, Icons.star_border),
 
-                _uploadButton(),
+            SizedBox(height: 30),
+            _sectionTitle("السيرة الذاتية"),
 
-                SizedBox(height: 35),
+            _uploadButton(),
 
-                _goldButton(
-                  text: "إرسال الطلب",
-                  onPressed: () {
-                    // لاحقًا نضيف إرسال البيانات
-                  },
-                ),
-              ],
+            SizedBox(height: 40),
+
+            _mainButton(
+              text: "إرسال الطلب",
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("تم إرسال الطلب بنجاح"),
+                    backgroundColor: Color(0xFF12433B),
+                  ),
+                );
+              },
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
   Widget _sectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: Color(0xFF988561),
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      title,
+      style: TextStyle(
+        color: Color(0xFF12433B),
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
 
-  Widget _input(String label, TextEditingController controller, IconData icon) {
+  Widget _inputField(
+    String label,
+    TextEditingController controller,
+    IconData icon,
+  ) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Color(0xFF988561)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Color(0xFF988561), width: 1.5),
       ),
       child: TextField(
         controller: controller,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.black87),
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Color(0xFF988561)),
           labelText: label,
@@ -114,7 +118,7 @@ class JobFormScreen extends StatelessWidget {
       width: double.infinity,
       height: 55,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Color(0xFF988561), width: 2),
       ),
       child: TextButton.icon(
@@ -122,29 +126,27 @@ class JobFormScreen extends StatelessWidget {
         icon: Icon(Icons.upload_file, color: Color(0xFF988561)),
         label: Text(
           "رفع السيرة الذاتية (PDF)",
-          style: TextStyle(color: Color(0xFF988561), fontSize: 16),
+          style: TextStyle(
+            color: Color(0xFF988561),
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
   }
 
-  Widget _goldButton({required String text, required VoidCallback onPressed}) {
+  Widget _mainButton({required String text, required VoidCallback onTap}) {
     return Container(
       width: double.infinity,
       height: 55,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF988561), Color(0xFF7A6A4F)],
-        ),
-        borderRadius: BorderRadius.circular(15),
+        color: Color(0xFF12433B),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: onPressed,
-        child: Text(text, style: TextStyle(fontSize: 18, color: Colors.white)),
+      child: TextButton(
+        onPressed: onTap,
+        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
       ),
     );
   }
