@@ -1,109 +1,100 @@
 import 'package:flutter/material.dart';
+import '../app_theme.dart';
+import '../widgets/app_widgets.dart';
 
 class NewsScreen extends StatelessWidget {
-  final List<Map<String, String>> news = [
+  const NewsScreen({super.key});
+
+  final List<Map<String, String>> news = const [
     {
-      "title": "فتح باب التوظيف",
-      "desc": "تم فتح باب التقديم لوظائف جديدة في مختلف الأقسام.",
+      'title': 'فتح باب التقديم',
+      'desc': 'استقبال طلبات التوظيف للوظائف الإدارية والفنية ضمن المواعيد المحددة.',
+      'tag': 'توظيف',
     },
     {
-      "title": "إعلان هام",
-      "desc": "تحديثات جديدة في نظام الانتساب للعام الحالي.",
-    },
-    {"title": "فرص تدريب", "desc": "إطلاق برنامج تدريب للخريجين الجدد."},
-    {
-      "title": "تطوير الأنظمة",
-      "desc": "تحديث النظام الإلكتروني لتسهيل عملية التقديم.",
-    },
-    {"title": "وظائف مؤقتة", "desc": "فرص عمل مؤقتة متاحة لمدة 3 أشهر."},
-    {
-      "title": "مقابلات شخصية",
-      "desc": "بدء المقابلات الشخصية للمتقدمين للوظائف الإدارية.",
+      'title': 'تحديث شروط الانتساب',
+      'desc': 'اعتماد قائمة وثائق محدثة لتسهيل إجراءات التدقيق الأولي.',
+      'tag': 'انتساب',
     },
     {
-      "title": "إعلان نتائج",
-      "desc": "إعلان نتائج المقبولين في المرحلة الأولى.",
-    },
-    {"title": "دورات مجانية", "desc": "توفير دورات تدريبية مجانية للمتقدمين."},
-    {"title": "فرع جديد", "desc": "افتتاح فرع جديد لخدمة المنتسبين."},
-    {
-      "title": "تحديث بيانات",
-      "desc": "دعوة المنتسبين لتحديث بياناتهم عبر التطبيق.",
+      'title': 'مواعيد المقابلات',
+      'desc': 'سيتم نشر مواعيد المقابلات للطلبات المقبولة مبدئيًا عبر التطبيق.',
+      'tag': 'إعلان',
     },
     {
-      "title": "إجازات رسمية",
-      "desc": "تنويه بخصوص مواعيد العمل خلال الإجازات الرسمية.",
-    },
-    {"title": "مبادرة جديدة", "desc": "إطلاق مبادرة لدعم الباحثين عن عمل."},
-    {
-      "title": "تحسين الخدمات",
-      "desc": "تحسين سرعة معالجة الطلبات الإلكترونية.",
-    },
-    {"title": "ورش عمل", "desc": "تنظيم ورش عمل حول كتابة السيرة الذاتية."},
-    {
-      "title": "تنويه مهم",
-      "desc": "يرجى متابعة البريد الإلكتروني لمعرفة حالة الطلب.",
+      'title': 'دعم المتقدمين',
+      'desc': 'تخصيص نافذة مساعدة للإجابة على الاستفسارات المتعلقة بالتقديم.',
+      'tag': 'خدمة',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xFF12433B)),
-        title: Text(
-          "الأخبار",
-          style: TextStyle(
-            color: Color(0xFF12433B),
-            fontWeight: FontWeight.bold,
+      appBar: AppBar(title: const Text('الأخبار والإعلانات')),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          const GovernmentHeader(
+            title: 'الإعلانات الرسمية',
+            subtitle: 'تابع آخر المستجدات الخاصة بالانتساب والتوظيف.',
+            icon: Icons.campaign_outlined,
           ),
-        ),
-        centerTitle: true,
-      ),
-
-      body: ListView.builder(
-        padding: EdgeInsets.all(20),
-        itemCount: news.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.only(bottom: 15),
-            padding: EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Color(0xFF988561), width: 1.5),
-              color: Colors.white,
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.newspaper, color: Color(0xFF988561), size: 32),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        news[index]["title"]!,
-                        style: TextStyle(
-                          color: Color(0xFF12433B),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+          const SizedBox(height: 20),
+          ...news.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: AppCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.heritageGold.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            item['tag']!,
+                            style: const TextStyle(
+                              color: AppColors.deepGreen,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
                         ),
+                        const Spacer(),
+                        const Icon(Icons.article_outlined,
+                            color: AppColors.heritageGold),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      item['title']!,
+                      style: const TextStyle(
+                        color: AppColors.deepGreen,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
                       ),
-                      SizedBox(height: 5),
-                      Text(
-                        news[index]["desc"]!,
-                        style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                    ),
+                    const SizedBox(height: 7),
+                    Text(
+                      item['desc']!,
+                      style: const TextStyle(
+                        color: AppColors.muted,
+                        height: 1.5,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

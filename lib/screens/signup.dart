@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import '../app_theme.dart';
+import '../widgets/app_widgets.dart';
+import 'home.dart';
 import 'login.dart';
 
 class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
+
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController phone = TextEditingController();
@@ -10,152 +15,79 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 40),
-
-                Text(
-                  "إنشاء حساب",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF12433B),
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const GovernmentHeader(
+              title: 'إنشاء حساب جديد',
+              subtitle: 'سجل بياناتك الأساسية للبدء بتقديم الطلبات ومتابعتها.',
+              icon: Icons.person_add_alt_1,
+            ),
+            const SizedBox(height: 22),
+            AppTextField(
+              label: 'الاسم الكامل',
+              controller: name,
+              icon: Icons.person_outline,
+            ),
+            const SizedBox(height: 14),
+            AppTextField(
+              label: 'البريد الإلكتروني',
+              controller: email,
+              icon: Icons.email_outlined,
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 14),
+            AppTextField(
+              label: 'رقم الهاتف',
+              controller: phone,
+              icon: Icons.phone_outlined,
+              keyboardType: TextInputType.phone,
+            ),
+            const SizedBox(height: 14),
+            AppTextField(
+              label: 'كلمة المرور',
+              controller: password,
+              icon: Icons.lock_outline,
+              obscureText: true,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => HomeScreen(
+                      name: name.text.isEmpty ? 'مستخدم جديد' : name.text,
+                      email: email.text,
+                      phone: phone.text,
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 10),
-
-                Text(
-                  "أدخل بياناتك لإنشاء حساب جديد",
-                  style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                ),
-
-                const SizedBox(height: 40),
-
-                _inputField(
-                  label: "الاسم الكامل",
-                  controller: name,
-                  icon: Icons.person_outline,
-                ),
-
-                const SizedBox(height: 20),
-
-                _inputField(
-                  label: "البريد الإلكتروني",
-                  controller: email,
-                  icon: Icons.email_outlined,
-                ),
-
-                const SizedBox(height: 20),
-
-                _inputField(
-                  label: "رقم الهاتف",
-                  controller: phone,
-                  icon: Icons.phone_outlined,
-                ),
-
-                const SizedBox(height: 20),
-
-                _inputField(
-                  label: "كلمة المرور",
-                  controller: password,
-                  icon: Icons.lock_outline,
-                  isPassword: true,
-                ),
-
-                const SizedBox(height: 30),
-
-                _mainButton(
-                  text: "إنشاء الحساب",
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("تم إنشاء الحساب بنجاح"),
-                        backgroundColor: Color(0xFF12433B),
-                      ),
+                );
+              },
+              icon: const Icon(Icons.verified_user_outlined),
+              label: const Text('إنشاء الحساب'),
+            ),
+            const SizedBox(height: 14),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('لديك حساب بالفعل؟',
+                    style: TextStyle(color: AppColors.muted)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => LoginScreen()),
                     );
                   },
+                  child: const Text('تسجيل الدخول'),
                 ),
-
-                const SizedBox(height: 20),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "لديك حساب بالفعل",
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => LoginScreen()),
-                        );
-                      },
-                      child: Text(
-                        "تسجيل الدخول",
-                        style: TextStyle(
-                          color: Color(0xFF988561),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
               ],
             ),
-          ),
+          ],
         ),
-      ),
-    );
-  }
-
-  Widget _inputField({
-    required String label,
-    required TextEditingController controller,
-    required IconData icon,
-    bool isPassword = false,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Color(0xFF988561), width: 1.5),
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: isPassword,
-        style: TextStyle(color: Colors.black87),
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Color(0xFF988561)),
-          labelText: label,
-          labelStyle: TextStyle(color: Color(0xFF988561)),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        ),
-      ),
-    );
-  }
-
-  Widget _mainButton({required String text, required VoidCallback onTap}) {
-    return Container(
-      width: double.infinity,
-      height: 55,
-      decoration: BoxDecoration(
-        color: Color(0xFF12433B),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextButton(
-        onPressed: onTap,
-        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
       ),
     );
   }

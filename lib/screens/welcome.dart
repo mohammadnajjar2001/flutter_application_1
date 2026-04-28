@@ -1,130 +1,116 @@
 import 'package:flutter/material.dart';
+import '../app_theme.dart';
+import '../widgets/app_widgets.dart';
 import 'login.dart';
-import 'signup.dart';
 import 'news.dart';
+import 'signup.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 60),
-
-              // Logo
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: Color(0xFF12433B),
-                  shape: BoxShape.circle,
-                ),
-                child: Image.asset("assets/images/1.png", fit: BoxFit.contain),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Container(
+                    width: 58,
+                    height: 58,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.deepGreen,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.heritageGold),
+                    ),
+                    child: Image.asset('assets/images/1.png'),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'فرع الانتساب والتوظيف',
+                          style: TextStyle(
+                            color: AppColors.deepGreen,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          'بوابة الخدمات الإلكترونية',
+                          style: TextStyle(color: AppColors.muted),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-
-              const SizedBox(height: 30),
-
-              Text(
-                "أهلاً بك",
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF12433B),
-                ),
+              const SizedBox(height: 22),
+              const GovernmentHeader(
+                title: 'خدمات الانتساب والتوظيف في مكان واحد',
+                subtitle:
+                    'تقديم الطلبات، متابعة الحالة، الاطلاع على الشروط، ومعرفة الإعلانات الرسمية من خلال واجهة موحدة وواضحة.',
               ),
-
-              const SizedBox(height: 10),
-
-              Text(
-                "اختر ما تريد القيام به",
-                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-              ),
-
-              const SizedBox(height: 50),
-
-              _mainButton(
-                text: "تسجيل الدخول",
-                onTap: () {
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => LoginScreen()),
                   );
                 },
+                icon: const Icon(Icons.login),
+                label: const Text('تسجيل الدخول'),
               ),
-
-              const SizedBox(height: 20),
-
-              _outlineButton(
-                text: "إنشاء حساب جديد",
-                onTap: () {
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => SignupScreen()),
                   );
                 },
+                icon: const Icon(Icons.person_add_alt_1),
+                label: const Text('إنشاء حساب جديد'),
               ),
-
               const SizedBox(height: 20),
-
-              TextButton(
-                onPressed: () {
+              QuickActionCard(
+                icon: Icons.campaign_outlined,
+                title: 'الإعلانات الرسمية',
+                subtitle: 'آخر أخبار التوظيف ومواعيد الانتساب',
+                onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => NewsScreen()),
+                    MaterialPageRoute(builder: (_) => const NewsScreen()),
                   );
                 },
-                child: Text(
-                  "عرض الأخبار",
-                  style: TextStyle(
-                    color: Color(0xFF988561),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+              ),
+              const SizedBox(height: 12),
+              const AppCard(
+                child: Row(
+                  children: [
+                    Icon(Icons.verified_user_outlined,
+                        color: AppColors.heritageGold),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'هذه نسخة واجهة أمامية تجريبية ولا ترتبط حاليًا بخدمات خلفية.',
+                        style: TextStyle(color: AppColors.muted, height: 1.5),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _mainButton({required String text, required VoidCallback onTap}) {
-    return Container(
-      width: double.infinity,
-      height: 55,
-      decoration: BoxDecoration(
-        color: Color(0xFF12433B),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextButton(
-        onPressed: onTap,
-        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
-      ),
-    );
-  }
-
-  Widget _outlineButton({required String text, required VoidCallback onTap}) {
-    return Container(
-      width: double.infinity,
-      height: 55,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Color(0xFF988561), width: 2),
-      ),
-      child: TextButton(
-        onPressed: onTap,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Color(0xFF988561),
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ),

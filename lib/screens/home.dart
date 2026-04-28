@@ -1,194 +1,224 @@
 import 'package:flutter/material.dart';
-import 'news.dart';
+import '../app_theme.dart';
+import '../widgets/app_widgets.dart';
+import 'centers.dart';
+import 'contact.dart';
+import 'faq.dart';
 import 'job_form.dart';
 import 'login.dart';
+import 'news.dart';
+import 'requirements.dart';
+import 'tracking.dart';
 
 class HomeScreen extends StatelessWidget {
   final String name;
   final String email;
   final String phone;
 
-  HomeScreen({required this.name, required this.email, required this.phone});
+  const HomeScreen({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       drawer: _buildDrawer(context),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xFF12433B)),
-        title: Text(
-          "الصفحة الرئيسية",
-          style: TextStyle(
-            color: Color(0xFF12433B),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          children: [
-            // صورة الحساب
-            CircleAvatar(
-              radius: 45,
-              backgroundColor: Color(0xFF12433B),
-              child: Icon(Icons.person, size: 55, color: Colors.white),
-            ),
-
-            const SizedBox(height: 20),
-
-            Text(
-              name,
-              style: TextStyle(
-                fontSize: 24,
-                color: Color(0xFF12433B),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 5),
-
-            Text(
-              email,
-              style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-            ),
-
-            const SizedBox(height: 30),
-
-            _infoTile("رقم الهاتف", phone),
-            const SizedBox(height: 15),
-            _infoTile("البريد الإلكتروني", email),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _infoTile(String title, String value) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Color(0xFF988561), width: 1.5),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      appBar: AppBar(title: const Text('الرئيسية')),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFF988561),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+          GovernmentHeader(
+            title: 'مرحبًا، $name',
+            subtitle:
+                'تابع طلباتك وخدمات الانتساب والتوظيف من لوحة واحدة مصممة للإنجاز السريع.',
+            icon: Icons.account_balance_outlined,
           ),
-          Text(
-            value,
-            style: TextStyle(
-              color: Color(0xFF12433B),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          const SizedBox(height: 18),
+          Row(
+            children: [
+              Expanded(child: _stat('طلباتي', '1', Icons.assignment_outlined)),
+              const SizedBox(width: 10),
+              Expanded(child: _stat('قيد المراجعة', '1', Icons.pending_actions)),
+            ],
+          ),
+          const SizedBox(height: 22),
+          const AppSectionTitle(title: 'الخدمات'),
+          const SizedBox(height: 12),
+          QuickActionCard(
+            icon: Icons.work_outline,
+            title: 'تقديم طلب توظيف',
+            subtitle: 'إدخال البيانات الشخصية والمؤهلات والخبرات',
+            onTap: () => _open(context, JobFormScreen()),
+          ),
+          const SizedBox(height: 12),
+          QuickActionCard(
+            icon: Icons.track_changes_outlined,
+            title: 'متابعة حالة الطلب',
+            subtitle: 'عرض مرحلة التدقيق والقبول وموعد المقابلة',
+            onTap: () => _open(context, TrackingScreen()),
+          ),
+          const SizedBox(height: 12),
+          QuickActionCard(
+            icon: Icons.fact_check_outlined,
+            title: 'الشروط والوثائق',
+            subtitle: 'قائمة المتطلبات الأساسية قبل إرسال الطلب',
+            onTap: () => _open(context, const RequirementsScreen()),
+          ),
+          const SizedBox(height: 22),
+          const AppSectionTitle(title: 'معلومات الحساب'),
+          const SizedBox(height: 12),
+          AppCard(
+            child: Column(
+              children: [
+                _profileLine(Icons.email_outlined, 'البريد الإلكتروني', email),
+                const Divider(height: 24),
+                _profileLine(Icons.phone_outlined, 'رقم الهاتف', phone),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _stat(String title, String value, IconData icon) {
+    return AppCard(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: AppColors.heritageGold),
+          const SizedBox(height: 12),
+          Text(
+            value,
+            style: const TextStyle(
+              color: AppColors.deepGreen,
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          Text(title, style: const TextStyle(color: AppColors.muted)),
+        ],
+      ),
+    );
+  }
+
+  Widget _profileLine(IconData icon, String title, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: AppColors.heritageGold),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(title, style: const TextStyle(color: AppColors.muted)),
+        ),
+        Flexible(
+          child: Text(
+            value.isEmpty ? 'غير محدد' : value,
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: AppColors.ink,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   Drawer _buildDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: Color(0xFF12433B)),
+            decoration: const BoxDecoration(color: AppColors.deepGreen),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.person, size: 45, color: Color(0xFF12433B)),
+                Container(
+                  width: 54,
+                  height: 54,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.person,
+                      size: 34, color: AppColors.deepGreen),
                 ),
-                const SizedBox(height: 10),
-                Text(name, style: TextStyle(color: Colors.white, fontSize: 20)),
+                const SizedBox(height: 12),
                 Text(
-                  email,
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                  name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
+                Text(email, style: const TextStyle(color: Colors.white70)),
               ],
             ),
           ),
-
+          _drawerItem(context, Icons.home_outlined, 'الرئيسية',
+              () => Navigator.pop(context)),
+          _drawerItem(context, Icons.campaign_outlined, 'الأخبار',
+              () => _replaceDrawer(context, const NewsScreen())),
+          _drawerItem(context, Icons.work_outline, 'طلب توظيف',
+              () => _replaceDrawer(context, JobFormScreen())),
+          _drawerItem(context, Icons.track_changes_outlined, 'متابعة الطلب',
+              () => _replaceDrawer(context, TrackingScreen())),
+          _drawerItem(context, Icons.fact_check_outlined, 'الشروط والوثائق',
+              () => _replaceDrawer(context, const RequirementsScreen())),
+          _drawerItem(context, Icons.location_city_outlined, 'مراكز الانتساب',
+              () => _replaceDrawer(context, const CentersScreen())),
+          _drawerItem(context, Icons.help_outline, 'الأسئلة الشائعة',
+              () => _replaceDrawer(context, const FaqScreen())),
+          _drawerItem(context, Icons.support_agent_outlined, 'التواصل والدعم',
+              () => _replaceDrawer(context, ContactScreen())),
+          const Divider(),
           _drawerItem(
-            icon: Icons.home,
-            text: "الصفحة الرئيسية",
-            onTap: () => Navigator.pop(context),
-          ),
-
-          _drawerItem(
-            icon: Icons.newspaper,
-            text: "الأخبار",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => NewsScreen()),
-              );
-            },
-          ),
-
-          _drawerItem(
-            icon: Icons.work_outline,
-            text: "طلب توظيف",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => JobFormScreen()),
-              );
-            },
-          ),
-
-          Divider(),
-
-          _drawerItem(
-            icon: Icons.logout,
-            text: "تسجيل الخروج",
-            color: Colors.red,
-            onTap: () {
+            context,
+            Icons.logout,
+            'تسجيل الخروج',
+            () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => LoginScreen()),
               );
             },
+            color: Colors.red.shade700,
           ),
         ],
       ),
     );
   }
 
-  Widget _drawerItem({
-    required IconData icon,
-    required String text,
-    required VoidCallback onTap,
-    Color color = const Color(0xFF12433B),
+  Widget _drawerItem(
+    BuildContext context,
+    IconData icon,
+    String text,
+    VoidCallback onTap, {
+    Color color = AppColors.deepGreen,
   }) {
     return ListTile(
       leading: Icon(icon, color: color),
       title: Text(
         text,
-        style: TextStyle(
-          color: color,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(color: color, fontWeight: FontWeight.w800),
       ),
       onTap: onTap,
     );
+  }
+
+  void _open(BuildContext context, Widget screen) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+  }
+
+  void _replaceDrawer(BuildContext context, Widget screen) {
+    Navigator.pop(context);
+    _open(context, screen);
   }
 }
